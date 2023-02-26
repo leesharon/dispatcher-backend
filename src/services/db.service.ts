@@ -1,8 +1,9 @@
 import mongoose, { ConnectOptions } from 'mongoose'
 
-const DB_URL = 'mongodb+srv://lees:89c5pb7d8kUQFUjy@dispatcher.qksharh.mongodb.net/test'
-
 const connect = async () => {
+    const DB_URL = process.env.DB_URL
+    if (mongoose.connection.readyState === 1) return
+    if (!DB_URL) throw new Error('DB_URL is not defined.')
     try {
         await mongoose.connect(DB_URL, {
             useNewUrlParser: true,
