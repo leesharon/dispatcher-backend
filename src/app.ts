@@ -1,7 +1,10 @@
 import express from 'express'
+import connect from './services/db.service'
 
 const app = express()
 const port = 3000
+
+connect()
 
 app.use(express.json())
 
