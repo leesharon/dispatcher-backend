@@ -1,8 +1,9 @@
 import express from 'express'
-import { getHeadlines } from './headlines.controller'
+import { getHeadlines, getHeadlineById } from './headlines.controller'
 
 const router = express.Router()
 
 router.get('/', getHeadlines)
+router.get('/:id', getHeadlineById)
 
 export default router

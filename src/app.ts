@@ -3,6 +3,8 @@ import express from 'express'
 const app = express()
 const port = 3000
 
+app.use(express.json())
+
 // routes
 import authRoutes from './api/auth/auth.routes'
 import headlinesRoutes from './api/headlines/headlines.routes'

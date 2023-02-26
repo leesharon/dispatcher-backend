@@ -4,4 +4,8 @@ const getHeadlines: Handler = async (req, res) => {
     res.status(200).send('get headlines!!')
 }
 
-export { getHeadlines }
+const getHeadlineById: Handler = async (req, res) => {
+    res.status(200).send('getHeadlineById!!')
+}
+
+export { getHeadlines, getHeadlineById }
