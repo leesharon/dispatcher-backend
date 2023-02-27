@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.get('/', getHeadlines)
 router.get('/:id', getHeadlineById)
-router.post('/', addHeadline)
-router.post('/:id', Validator.validateHeadline, updateHeadline)
+router.post('/', Validator.validateHeadline, addHeadline)
+router.post('/:id', updateHeadline)
 router.delete('/:id', removeHeadline)
 
 export default router
