@@ -53,4 +53,17 @@ const updateHeadline: Handler = async (req, res) => {
     }
 }
 
-export { getHeadlines, getHeadlineById, addHeadline, updateHeadline }
+const removeHeadline: Handler = async (req, res) => {
+    const { id } = req.params
+    try {
+        const removedHeadline = await headlinesService.removeHeadline(id)
+        if (!removedHeadline) throw new Error('headline could not be removed')
+        res.status(200).send(removedHeadline)
+
+    } catch (err) {
+        console.log(err, 'error removing headline')
+        res.status(500).send({ err: 'removeHeadline failed to remove headline' })
+    }
+}
+
+export { getHeadlines, getHeadlineById, addHeadline, updateHeadline, removeHeadline }

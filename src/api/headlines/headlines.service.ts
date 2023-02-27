@@ -5,7 +5,8 @@ export const headlinesService = {
     getHeadlines,
     getHeadlineById,
     addHeadline,
-    updateHeadline
+    updateHeadline,
+    removeHeadline
 }
 
 async function getHeadlines() {
@@ -22,5 +23,9 @@ async function addHeadline(headline: HeadlineDoc) {
 
 async function updateHeadline(id: string, headline: HeadlineDoc) {
     return Headline.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { ...headline })
+}
+
+async function removeHeadline(id: string) {
+    return Headline.deleteOne({ _id: new mongoose.Types.ObjectId(id) })
 }
 
