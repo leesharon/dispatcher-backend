@@ -1,4 +1,5 @@
 import { Handler } from 'express'
+import { HeadlineDoc } from '../../models/headline.model'
 import { headlinesService } from './headlines.service'
 
 const getHeadlines: Handler = async (req, res) => {
@@ -26,11 +27,11 @@ const getHeadlineById: Handler = async (req, res) => {
 }
 
 const addHeadline: Handler = async (req, res) => {
-    const { source, author, title, description, url, urlToImage, publishedAt, content } = req.body
+    const { headline } = req.body
     try {
-        const headline = await headlinesService.addHeadline(title, description, url, urlToImage, publishedAt, source, author, content)
-        if (!headline) throw new Error('headline not could not be created')
-        res.status(200).send(headline)
+        const addedHeadline = await headlinesService.addHeadline(headline)
+        if (!addedHeadline) throw new Error('headline could not be created')
+        res.status(200).send(addedHeadline)
 
     } catch (err) {
         console.log(err, 'error adding headline')
@@ -38,4 +39,18 @@ const addHeadline: Handler = async (req, res) => {
     }
 }
 
-export { getHeadlines, getHeadlineById, addHeadline }
+const updateHeadline: Handler = async (req, res) => {
+    const { id } = req.params
+    const { headline } = req.body
+    try {
+        const updatedHeadline = await headlinesService.updateHeadline(id, headline as HeadlineDoc)
+        if (!updatedHeadline) throw new Error('headline could not be updated')
+        res.status(200).send(updatedHeadline)
+
+    } catch (err) {
+        console.log(err, 'error updating headline')
+        res.status(500).send({ err: 'updateHeadline failed to update headline' })
+    }
+}
+
+export { getHeadlines, getHeadlineById, addHeadline, updateHeadline }

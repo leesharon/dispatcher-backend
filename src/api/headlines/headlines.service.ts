@@ -4,7 +4,8 @@ import Headline, { HeadlineDoc } from '../../models/headline.model'
 export const headlinesService = {
     getHeadlines,
     getHeadlineById,
-    addHeadline
+    addHeadline,
+    updateHeadline
 }
 
 async function getHeadlines() {
@@ -15,7 +16,11 @@ async function getHeadlineById(id: string) {
     return Headline.find({ _id: new mongoose.Types.ObjectId(id) })
 }
 
-async function addHeadline(title: string, description: string, url: string, urlToImage: string, publishedAt: string, source: string, author: string, content: string) {
-    return Headline.create({ title, description, url, urlToImage, publishedAt, source, author, content })
+async function addHeadline(headline: HeadlineDoc) {
+    return Headline.create(headline)
+}
+
+async function updateHeadline(id: string, headline: HeadlineDoc) {
+    return Headline.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { ...headline })
 }
 

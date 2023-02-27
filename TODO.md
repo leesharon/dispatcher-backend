@@ -1,2 +1,2 @@
 Ask About
-- req.body validations
+- req.body validations for headlines

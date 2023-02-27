@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 interface HeadlineDoc extends Document {
-    _id: string
+    _id: mongoose.Schema.Types.ObjectId
     source: {
         id: string | null
         name: string
@@ -19,6 +19,7 @@ interface HeadlineDoc extends Document {
 const headlineSchema = new mongoose.Schema<HeadlineDoc>({
     _id: {
         type: String,
+        default: mongoose.Types.ObjectId,
     },
     source: {
         type: {
