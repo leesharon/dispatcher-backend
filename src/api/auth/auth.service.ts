@@ -1,4 +1,4 @@
-import UserDoc from '../../models/user.model'
+import User from '../../models/user.model'
 
 export const authService = {
     signup,

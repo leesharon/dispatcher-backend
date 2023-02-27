@@ -13,7 +13,6 @@ const getHeadlines: Handler = async (req, res) => {
 }
 
 const getHeadlineById: Handler = async (req, res) => {
-    res.status(200).send('getHeadlineById!!')
     try {
         const headline = await headlinesService.getHeadlineById()
         res.status(200).send(headline)
