@@ -1,4 +1,4 @@
-import User from '../../collections/user.collection'
+import User from '../../models/user.model'
 
 export const authService = {
     signup,
@@ -7,12 +7,13 @@ export const authService = {
 }
 
 async function signup() {
-    User.create({ name: 'test', email: 'test@test.com', password: 'test' })
-    return 'signedup!!'
+    return User.create({ name: 'test', email: 'test@tesst.com', password: 'test' })
 }
 
-async function login() {
-    return 'loggedin!'
+async function login(email: string, password: string) {
+    const user = await User.find({ email, password })
+    if (!user) return Promise.reject('Invalid username or password')
+    return user
 }
 
 async function logout() {

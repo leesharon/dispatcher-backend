@@ -29,6 +29,8 @@ const userSchema = new mongoose.Schema({
         }],
         required: false,
     },
+    lastSignInTime: { type: Number, required: false },
+    photoURL: { type: String, required: false },
 })
 
 // Use the existing user collection

@@ -13,8 +13,9 @@ const signup: Handler = async (req, res) => {
 }
 
 const login: Handler = async (req, res) => {
+    const { email, password } = req.body
     try {
-        const user = await authService.login()
+        const user = await authService.login(email, password)
         res.status(200).send(user)
 
     } catch (err) {
