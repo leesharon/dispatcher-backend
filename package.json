@@ -12,7 +12,7 @@
         "typescript": "*"
     },
     "scripts": {
-        "start": "ts-node-dev --no-notify --respawn --transpile-only src/app.ts",
+        "start": "ts-node-dev --no-notify --respawn --transpile-only src/server.ts",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix"
     },
