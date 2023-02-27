@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
-import Headline from '../../models/headline.model'
+import Headline, { HeadlineDoc } from '../../models/headline.model'
 
 export const headlinesService = {
     getHeadlines,
-    getHeadlineById
+    getHeadlineById,
+    addHeadline
 }
 
 async function getHeadlines() {
@@ -13,3 +14,8 @@ async function getHeadlines() {
 async function getHeadlineById(id: string) {
     return Headline.find({ _id: new mongoose.Types.ObjectId(id) })
 }
+
+async function addHeadline(title: string, description: string, url: string, urlToImage: string, publishedAt: string, source: string, author: string, content: string) {
+    return Headline.create({ title, description, url, urlToImage, publishedAt, source, author, content })
+}
+

@@ -16,7 +16,7 @@ const getHeadlineById: Handler = async (req, res) => {
     const { id } = req.params
     try {
         const headline = await headlinesService.getHeadlineById(id)
-        if (!headline) return res.status(404).send({ err: 'headline not found' })
+        if (!headline) throw new Error('headline not found')
         res.status(200).send(headline)
 
     } catch (err) {
@@ -25,4 +25,17 @@ const getHeadlineById: Handler = async (req, res) => {
     }
 }
 
-export { getHeadlines, getHeadlineById }
+const addHeadline: Handler = async (req, res) => {
+    const { source, author, title, description, url, urlToImage, publishedAt, content } = req.body
+    try {
+        const headline = await headlinesService.addHeadline(title, description, url, urlToImage, publishedAt, source, author, content)
+        if (!headline) throw new Error('headline not could not be created')
+        res.status(200).send(headline)
+
+    } catch (err) {
+        console.log(err, 'error adding headline')
+        res.status(500).send({ err: 'addHeadline failed to add headline' })
+    }
+}
+
+export { getHeadlines, getHeadlineById, addHeadline }
