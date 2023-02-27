@@ -1,7 +1,23 @@
 import mongoose from 'mongoose'
 
+interface UserDoc extends Document {
+    name: string
+    email: string
+    password: string
+    favoriteHeadlinesIds: string[]
+    notifications: {
+        id: string
+        text: string
+        isUnread: boolean
+        createdAt: number
+        headLineId: string
+    }[]
+    lastSignInTime: number
+    photoURL: string
+}
+
 // Define the schema for the existing user collection
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<UserDoc>({
     name: {
         type: String,
         required: false,
@@ -34,6 +50,6 @@ const userSchema = new mongoose.Schema({
 })
 
 // Use the existing user collection
-const User = mongoose.model('User', userSchema, 'user')
+const User = mongoose.model<UserDoc>('User', userSchema, 'user')
 
-export default User
+export default UserDoc

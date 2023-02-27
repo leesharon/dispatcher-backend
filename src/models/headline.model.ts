@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-interface Headline {
+interface HeadlineDoc extends Document {
     id: string
     source: {
         id: string | null
@@ -16,7 +16,7 @@ interface Headline {
 }
 
 // Define the schema for the existing user collection
-const headlineSchema = new mongoose.Schema({
+const headlineSchema = new mongoose.Schema<HeadlineDoc>({
     id: {
         type: String,
         required: true,
@@ -59,7 +59,7 @@ const headlineSchema = new mongoose.Schema({
 })
 
 // Use the existing user collection
-const Headline = mongoose.model<Headline>('Headline', headlineSchema, 'headline')
+const Headline = mongoose.model<HeadlineDoc>('Headline', headlineSchema, 'headline')
 
-export default Headline
-export type { Headline }
+export default HeadlineDoc
+export type { HeadlineDoc as Headline }
