@@ -7,7 +7,7 @@ const router = express.Router()
 router.get('/', getHeadlines)
 router.get('/:id', getHeadlineById)
 router.post('/', Validator.validateHeadline, addHeadline)
-router.post('/:id', updateHeadline)
+router.put('/:id', updateHeadline)
 router.delete('/:id', removeHeadline)
 
 export default router
