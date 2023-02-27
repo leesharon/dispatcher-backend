@@ -52,4 +52,4 @@ const userSchema = new mongoose.Schema<UserDoc>({
 // Use the existing user collection
 const User = mongoose.model<UserDoc>('User', userSchema, 'user')
 
-export default UserDoc
+export default User

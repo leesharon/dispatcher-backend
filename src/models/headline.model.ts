@@ -61,5 +61,4 @@ const headlineSchema = new mongoose.Schema<HeadlineDoc>({
 // Use the existing user collection
 const Headline = mongoose.model<HeadlineDoc>('Headline', headlineSchema, 'headline')
 
-export default HeadlineDoc
-export type { HeadlineDoc as Headline }
+export default Headline
