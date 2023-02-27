@@ -1,3 +1,5 @@
+import User from '../../collections/user.collection'
+
 export const authService = {
     signup,
     login,
@@ -5,6 +7,7 @@ export const authService = {
 }
 
 async function signup() {
+    User.create({ name: 'test', email: 'test@test.com', password: 'test' })
     return 'signedup!!'
 }
 
