@@ -24,7 +24,8 @@ function validateAuth() {
         body('email').isEmail().withMessage('Email must be valid'),
         body('password').trim()
             .isLength({ min: 12, max: 20 })
-            .withMessage('Password must be between 12 and 20 characters'),
-        // .isUppercase(),
+            .withMessage('Password must be between 12 and 20 characters')
+            .matches(/^(?=.*[A-Z])(?=.*\d)/)
+            .withMessage('Password must contain at least one uppercase letter and one number')
     ]
 }
