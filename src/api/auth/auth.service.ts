@@ -1,3 +1,4 @@
+import { BadRequestError } from '../../errors/bad-request-error'
 import User from '../../models/user.model'
 
 export const authService = {
@@ -6,8 +7,15 @@ export const authService = {
     logout
 }
 
-async function signup() {
-    return User.create({ name: 'test', email: 'test@tesst.com', password: 'test' })
+async function signup(email: string, password: string) {
+    const existingUser = await User.findOne({ email })
+    if (existingUser) throw new BadRequestError('Email in use')
+
+    const user = User.create({ email, password })
+
+
+
+    return user
 }
 
 async function login(email: string, password: string) {

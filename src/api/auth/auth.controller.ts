@@ -1,14 +1,15 @@
 import { Handler } from 'express'
 import { authService } from './auth.service'
 
-const signup: Handler = async (req, res) => {
+const signup: Handler = async (req, res, next) => {
+    const { email, password } = req.body
     try {
-        const user = await authService.signup()
+        const user = await authService.signup(email, password)
         res.status(200).send(user)
 
     } catch (err) {
         console.log(err, 'signup error')
-        res.status(500).send({ err: 'Failed to signup' })
+        next(err)
     }
 }
 
