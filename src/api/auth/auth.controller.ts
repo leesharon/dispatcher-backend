@@ -7,16 +7,18 @@ const signup: Handler = async (req: any, res, next) => {
     try {
         const user = await authService.signup(email, password)
 
-        const userJwt = jwt.sign(
-            {
-                id: user._id,
-                email: user.email
-            },
-            process.env.JWT_SECRET!
-        )
+        const accessToken = authService.generateAccessToken(user._id.toString())
+        const refreshToken = authService.generateRefreshToken(user._id.toString())
 
-        res.cookie('jwt', userJwt)
-        res.status(201).send({ user, token: userJwt })
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            maxAge: 15 * 60 * 1000 // 15 minutes
+        })
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        })
+        res.status(201).send({ user, accessToken, refreshToken })
 
     } catch (err) {
         console.log(err, 'signup error')

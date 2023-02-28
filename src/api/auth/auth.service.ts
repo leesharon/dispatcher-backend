@@ -1,10 +1,13 @@
+import jwt from 'jsonwebtoken'
 import { BadRequestError } from '../../errors/bad-request-error'
-import User from '../../models/user.model'
+import User, { UserDoc } from '../../models/user.model'
 
 export const authService = {
     signup,
     login,
-    logout
+    logout,
+    generateAccessToken,
+    generateRefreshToken,
 }
 
 async function signup(email: string, password: string) {
@@ -24,4 +27,12 @@ async function login(email: string, password: string) {
 
 async function logout() {
     return 'loggedout!'
+}
+
+function generateAccessToken(userId: string) {
+    return jwt.sign({ userId }, process.env.JWT_ACCESS_SECRET!, { expiresIn: '5s' })
+}
+
+function generateRefreshToken(userId: string) {
+    return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' })
 }
