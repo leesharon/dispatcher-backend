@@ -1,5 +1,4 @@
-import { Handler, NextFunction, Response } from 'express'
-import jwt from 'jsonwebtoken'
+import { Handler } from 'express'
 import { authService } from './auth.service'
 
 const signup: Handler = async (req: any, res, next) => {
@@ -30,7 +29,20 @@ const login: Handler = async (req, res) => {
     const { email, password } = req.body
     try {
         const user = await authService.login(email, password)
-        res.status(200).send(user)
+
+        // const accessToken = authService.generateAccessToken(user._id.toString())
+        // const refreshToken = authService.generateRefreshToken(user._id.toString())
+
+        // res.cookie('accessToken', accessToken, {
+        //     httpOnly: true,
+        //     maxAge: 15 * 60 * 1000 // 15 minutes
+        // })
+        // res.cookie('refreshToken', refreshToken, {
+        //     httpOnly: true,
+        //     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        // })
+        // res.status(200).send({ user, accessToken, refreshToken })
+        res.status(200).send({ user })
 
     } catch (err) {
         console.log(err, 'login error')
