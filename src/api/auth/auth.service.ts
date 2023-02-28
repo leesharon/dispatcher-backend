@@ -11,9 +11,7 @@ async function signup(email: string, password: string) {
     const existingUser = await User.findOne({ email })
     if (existingUser) throw new BadRequestError('Email in use')
 
-    const user = User.create({ email, password })
-
-
+    const user = await User.create({ email, password })
 
     return user
 }

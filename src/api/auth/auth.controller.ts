@@ -1,11 +1,22 @@
-import { Handler } from 'express'
+import { Handler, NextFunction, Response } from 'express'
+import jwt from 'jsonwebtoken'
 import { authService } from './auth.service'
 
-const signup: Handler = async (req, res, next) => {
+const signup: Handler = async (req: any, res, next) => {
     const { email, password } = req.body
     try {
         const user = await authService.signup(email, password)
-        res.status(200).send(user)
+
+        const userJwt = jwt.sign(
+            {
+                id: user._id,
+                email: user.email
+            },
+            process.env.JWT_SECRET!
+        )
+
+        res.cookie('jwt', userJwt)
+        res.status(201).send({ user, token: userJwt })
 
     } catch (err) {
         console.log(err, 'signup error')
