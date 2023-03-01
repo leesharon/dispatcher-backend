@@ -18,7 +18,7 @@ interface HeadlineDoc extends Document {
 // Define the schema for the existing user collection
 const headlineSchema = new mongoose.Schema<HeadlineDoc>({
     _id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         default: mongoose.Types.ObjectId,
     },
     source: {

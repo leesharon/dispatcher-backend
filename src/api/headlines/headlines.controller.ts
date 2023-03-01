@@ -1,28 +1,30 @@
 import { Handler } from 'express'
+import { DatabaseConnectionError } from '../../errors/database-connection-error'
 import { HeadlineDoc } from '../../models/headline.model'
 import { headlinesService } from './headlines.service'
 
-const getHeadlines: Handler = async (req, res) => {
+const getHeadlines: Handler = async (req, res, next) => {
     try {
         const headlines = await headlinesService.getHeadlines()
+        if (!headlines) throw new DatabaseConnectionError()
         res.status(200).send(headlines)
 
     } catch (err) {
         console.log(err, 'error getting headlines')
-        res.status(500).send({ err: 'getHeadlines failed to get headlines' })
+        next(err)
     }
 }
 
-const getHeadlineById: Handler = async (req, res) => {
+const getHeadlineById: Handler = async (req, res, next) => {
     const { id } = req.params
     try {
         const headline = await headlinesService.getHeadlineById(id)
-        if (!headline) throw new Error('headline not found')
+        if (headline.length === 0 || !headline) throw new DatabaseConnectionError()
         res.status(200).send(headline)
 
     } catch (err) {
-        console.log(err, 'error getting headlines')
-        res.status(500).send({ err: 'getHeadlineById failed to get headline' })
+        console.log(err, 'error getting headline by id')
+        next(err)
     }
 }
 

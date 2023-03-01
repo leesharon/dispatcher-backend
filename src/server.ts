@@ -9,6 +9,7 @@ import { NotFoundError } from './errors/not-found-error'
 import { morgan } from './logger'
 import { errorHandler } from './middlewares/error-handler'
 import connect from './services/db.service'
+import { isEnvVarsExist } from './utils/generalUtils'
 
 const app = express()
 
@@ -33,5 +34,6 @@ app.use(errorHandler)
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
+    if (!isEnvVarsExist()) throw new Error('need to setup env variables')
     console.log(`Server listening on port ${port}.`)
 })

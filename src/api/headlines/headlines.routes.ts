@@ -6,10 +6,10 @@ import { authenticateToken } from '../../middlewares/authenticate-token'
 
 const router = express.Router()
 
-router.get('/', getHeadlines)
-router.get('/:id', getHeadlineById)
+router.get('/', authenticateToken, getHeadlines)
+router.get('/:id', authenticateToken, getHeadlineById)
 router.post('/', authenticateToken, Validator.validateHeadline(), validateRequest, addHeadline)
-router.put('/:id', updateHeadline)
-router.delete('/:id', removeHeadline)
+router.put('/:id', authenticateToken, updateHeadline)
+router.delete('/:id', authenticateToken, removeHeadline)
 
 export default router

@@ -1,3 +1,4 @@
+import { BadRequestError } from './../../errors/bad-request-error'
 import mongoose from 'mongoose'
 import Headline, { HeadlineDoc } from '../../models/headline.model'
 
@@ -14,6 +15,7 @@ async function getHeadlines() {
 }
 
 async function getHeadlineById(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestError('Invalid headline id')
     return Headline.find({ _id: new mongoose.Types.ObjectId(id) })
 }
 
