@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 interface UserDoc extends Document {
     name: string
     email: string
-    password: string
+    password?: string
     favoriteHeadlinesIds: string[]
     notifications: {
         id: string

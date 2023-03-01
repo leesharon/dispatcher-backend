@@ -1,12 +1,15 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { BadRequestError } from '../../errors/bad-request-error'
-import User, { UserDoc } from '../../models/user.model'
+import User from '../../models/user.model'
+import { NotAuthorizedError } from '../../errors/not-authorized-error'
+import { Response } from 'express'
 
 export const authService = {
     signup,
     login,
     logout,
+    generateTokens,
     generateAccessToken,
     generateRefreshToken,
 }
@@ -18,20 +21,41 @@ async function signup(email: string, password: string) {
     const saltRounds = 10
     const hash = await bcrypt.hash(password, saltRounds)
 
-    const user = await User.create({ email, password: hash })
-
+    const user = await (await User.create({ email, password: hash })).toObject()
+    delete user.password
     return user
 }
 
 async function login(email: string, password: string) {
-    const user = await User.find({ email, password })
-    console.log('login ~ user:', user)
-    if (!user) return Promise.reject('Invalid username or password')
-    return user
+    const existingUser = await User.findOne({ email })
+    if (!existingUser) throw new BadRequestError('user does not exist')
+    if (!existingUser.password) throw new BadRequestError('user does not have a password')
+
+    const match = await bcrypt.compare(password, existingUser.password)
+    if (!match) throw new NotAuthorizedError()
+
+    const userObject = existingUser.toObject()
+    delete userObject.password
+
+    return userObject
 }
 
 async function logout() {
     return 'loggedout!'
+}
+
+function generateTokens(res: Response, userId: string) {
+    const accessToken = authService.generateAccessToken(userId)
+    const refreshToken = authService.generateRefreshToken(userId)
+
+    res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000 // 15 minutes
+    })
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    })
 }
 
 function generateAccessToken(userId: string) {
