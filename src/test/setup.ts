@@ -1,7 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import request from 'supertest'
-import app from '../server'
+import app from '../app'
 
 declare global {
     function login(): Promise<string[]>;
@@ -9,7 +9,7 @@ declare global {
 
 let mongo: any
 
-before(async () => {
+beforeAll(async () => {
     process.env.JWT_ACCESS_SECRET = 'asdfasdf'
     process.env.JWT_REFRESH_SECRET = 'kaskfdnasfkn'
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -28,7 +28,7 @@ beforeEach(async () => {
     }
 })
 
-after(async () => {
+afterAll(async () => {
     if (mongo) {
         await mongo.stop()
     }

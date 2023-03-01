@@ -1,37 +1,14 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
-
-import express from 'express'
-import { json } from 'body-parser'
-import cookieParser from 'cookie-parser'
-import apiRoutes from './api/api.routes'
-import { NotFoundError } from './errors/not-found-error'
-import { morgan } from './logger'
-import { errorHandler } from './middlewares/error-handler'
+import app from './app'
 import connect from './services/db.service'
 import { isEnvVarsExist } from './utils/generalUtils'
-
-const app = express()
+import { morgan } from './logger'
 
 if (process.env.NODE_ENV !== 'test') {
+    connect()
     if (!isEnvVarsExist()) throw new Error('need to setup env variables')
     app.use(morgan.successHandler)
     app.use(morgan.errorHandler)
 }
-
-connect()
-
-app.use(json())
-
-app.use(cookieParser())
-
-app.use('/api', apiRoutes)
-
-app.all('*', async (req, res) => {
-    throw new NotFoundError()
-})
-
-app.use(errorHandler)
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
