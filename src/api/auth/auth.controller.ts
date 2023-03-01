@@ -1,8 +1,6 @@
 import { Handler } from 'express'
 import { Strings } from '../../constants'
 import { authService } from './auth.service'
-import { DatabaseConnectionError } from '../../errors/database-connection-error'
-import { NotAuthorizedError } from '../../errors/not-authorized-error'
 
 const signup: Handler = async (req, res, next) => {
     const { email, password } = req.body
