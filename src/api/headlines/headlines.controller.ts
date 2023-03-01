@@ -1,3 +1,4 @@
+import { NotFoundError } from './../../errors/not-found-error'
 import { Handler } from 'express'
 import { DatabaseConnectionError } from '../../errors/database-connection-error'
 import { HeadlineDoc } from '../../models/headline.model'
@@ -32,7 +33,7 @@ const addHeadline: Handler = async (req, res, next) => {
     const { headline } = req.body
     try {
         const addedHeadline = await headlinesService.addHeadline(headline)
-        if (!addedHeadline) throw new DatabaseConnectionError()
+        if (!addedHeadline || headline.length === 0) throw new DatabaseConnectionError()
         res.status(200).send(addedHeadline)
 
     } catch (err) {
@@ -41,30 +42,30 @@ const addHeadline: Handler = async (req, res, next) => {
     }
 }
 
-const updateHeadline: Handler = async (req, res) => {
+const updateHeadline: Handler = async (req, res, next) => {
     const { id } = req.params
     const { headline } = req.body
     try {
-        const updatedHeadline = await headlinesService.updateHeadline(id, headline as HeadlineDoc)
-        if (!updatedHeadline) throw new Error('headline could not be updated')
-        res.status(200).send(updatedHeadline)
+        const data = await headlinesService.updateHeadline(id, headline as HeadlineDoc)
+        if (data.modifiedCount === 0) throw new NotFoundError()
+        res.status(200).send(data)
 
     } catch (err) {
         console.log(err, 'error updating headline')
-        res.status(500).send({ err: 'updateHeadline failed to update headline' })
+        next(err)
     }
 }
 
-const removeHeadline: Handler = async (req, res) => {
+const removeHeadline: Handler = async (req, res, next) => {
     const { id } = req.params
     try {
-        const removedHeadline = await headlinesService.removeHeadline(id)
-        if (!removedHeadline) throw new Error('headline could not be removed')
-        res.status(200).send(removedHeadline)
+        const data = await headlinesService.removeHeadline(id)
+        if (data.deletedCount === 0) throw new NotFoundError()
+        res.status(200).send(data)
 
     } catch (err) {
         console.log(err, 'error removing headline')
-        res.status(500).send({ err: 'removeHeadline failed to remove headline' })
+        next(err)
     }
 }
 

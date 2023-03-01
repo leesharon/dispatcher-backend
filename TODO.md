@@ -1,4 +1,6 @@
-Ask About
-logprefixes
-testing
-next(err)
+Todo's
+
+- logprefixes
+- testing
+- pagination
+- connect newsAPI
