@@ -1,37 +1,43 @@
 import { Handler } from 'express'
+import { Strings } from '../../constants'
 import { authService } from './auth.service'
 
-const signup: Handler = async (req, res) => {
+const signup: Handler = async (req, res, next) => {
+    const { email, password } = req.body
     try {
-        const user = await authService.signup()
-        res.status(200).send(user)
+        const user = await authService.signup(email, password)
+
+        authService.generateTokens(res, user._id.toString())
+        res.status(201).send({ user })
 
     } catch (err) {
         console.log(err, 'signup error')
-        res.status(500).send({ err: 'Failed to signup' })
+        next(err)
     }
 }
 
-const login: Handler = async (req, res) => {
+const login: Handler = async (req, res, next) => {
     const { email, password } = req.body
     try {
         const user = await authService.login(email, password)
-        res.status(200).send(user)
+        authService.generateTokens(res, user._id.toString())
+        res.status(200).send({ user })
 
     } catch (err) {
         console.log(err, 'login error')
-        res.status(401).send({ err: 'Failed to Login' })
+        next(err)
     }
 }
 
-const logout: Handler = async (req, res) => {
+const logout: Handler = async (req, res, next) => {
     try {
-        const user = await authService.logout()
-        res.status(200).send(user)
+        res.clearCookie(Strings.ACCESS_TOKEN)
+        res.clearCookie(Strings.REFRESH_TOKEN)
+        res.status(204).end()
 
     } catch (err) {
-        console.log(err, 'logout error')
-        res.status(500).send({ err: 'Failed to logout' })
+        console.log(err)
+        next(err)
     }
 }
 

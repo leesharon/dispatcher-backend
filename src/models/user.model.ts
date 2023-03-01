@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 interface UserDoc extends Document {
     name: string
     email: string
-    password: string
+    password?: string
     favoriteHeadlinesIds: string[]
     notifications: {
         id: string
@@ -53,3 +53,4 @@ const userSchema = new mongoose.Schema<UserDoc>({
 const User = mongoose.model<UserDoc>('User', userSchema, 'user')
 
 export default User
+export type { UserDoc }
