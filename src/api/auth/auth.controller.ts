@@ -24,7 +24,11 @@ const login: Handler = async (req, res, next) => {
         res.status(200).send({ user })
 
     } catch (err) {
-        //! improve console logs
+        console.log(`
+        login could not be completed for ${email}
+        params: ${req.body}
+        ${err}
+        `)
         console.log(err, 'login error')
         next(err)
     }
