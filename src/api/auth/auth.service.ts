@@ -6,43 +6,40 @@ import { NotAuthorizedError } from '../../errors/not-authorized-error'
 import { Response } from 'express'
 import { Strings } from '../../constants'
 
-export const authService = {
-    signup,
-    login,
-    generateTokens,
-    generateAccessToken,
-    generateRefreshToken,
-}
-
-async function signup(email: string, password: string) {
+const signup = async (email: string, password: string) => {
     const existingUser = await User.findOne({ email })
     if (existingUser) throw new BadRequestError('Email in use')
 
     const saltRounds = 10
     const hash = await bcrypt.hash(password, saltRounds)
 
-    const user = await (await User.create({ email, password: hash })).toObject()
-    delete user.password
-    return user
+    const user = await User.create({ email, password: hash })
+    return user.toObject({
+        transform: (doc, ret) => {
+            delete ret.password
+        }
+    })
 }
 
-async function login(email: string, password: string) {
-    const existingUser = await User.findOne({ email })
+const login = async (email: string, password: string) => {
+    const existingUser = await User.findOne({ email }).select('+password')
+
     if (!existingUser) throw new BadRequestError('user does not exist')
     if (!existingUser.password) throw new BadRequestError('user does not have a password')
 
     const match = await bcrypt.compare(password, existingUser.password)
     if (!match) throw new NotAuthorizedError()
 
-    const userObject = existingUser.toObject()
-    delete userObject.password
-
-    return userObject
+    return existingUser.toObject({
+        transform: (doc, ret) => {
+            delete ret.password
+        }
+    })
 }
 
-function generateTokens(res: Response, userId: string) {
-    const accessToken = authService.generateAccessToken(userId)
-    const refreshToken = authService.generateRefreshToken(userId)
+const generateTokens = (res: Response, userId: string) => {
+    const accessToken = jwt.sign({ userId }, process.env.JWT_ACCESS_SECRET!, { expiresIn: '15m' })
+    const refreshToken = jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' })
 
     res.cookie(Strings.ACCESS_TOKEN, accessToken, {
         httpOnly: true,
@@ -54,10 +51,8 @@ function generateTokens(res: Response, userId: string) {
     })
 }
 
-function generateAccessToken(userId: string) {
-    return jwt.sign({ userId }, process.env.JWT_ACCESS_SECRET!, { expiresIn: '15m' })
-}
-
-function generateRefreshToken(userId: string) {
-    return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' })
+export const authService = {
+    signup,
+    login,
+    generateTokens,
 }

@@ -24,6 +24,7 @@ const login: Handler = async (req, res, next) => {
         res.status(200).send({ user })
 
     } catch (err) {
+        //! improve console logs
         console.log(err, 'login error')
         next(err)
     }

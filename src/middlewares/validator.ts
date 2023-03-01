@@ -1,11 +1,6 @@
 import { body } from 'express-validator'
 
-export const Validator = {
-    validateHeadline,
-    validateAuth,
-}
-
-function validateHeadline() {
+const validateHeadline = () => {
     return [
         body('headline').isObject().withMessage('headline must be an object'),
         body('headline.title').isString().withMessage('headline title must be a string'),
@@ -19,7 +14,7 @@ function validateHeadline() {
     ]
 }
 
-function validateAuth() {
+const validateAuth = () => {
     return [
         body('email').isEmail().withMessage('Email must be valid'),
         body('password').trim()
@@ -28,4 +23,9 @@ function validateAuth() {
             .matches(/^(?=.*[A-Z])(?=.*\d)/)
             .withMessage('Password must contain at least one uppercase letter and one number')
     ]
+}
+
+export const Validator = {
+    validateHeadline,
+    validateAuth,
 }

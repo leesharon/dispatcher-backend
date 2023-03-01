@@ -28,16 +28,16 @@ const getHeadlineById: Handler = async (req, res, next) => {
     }
 }
 
-const addHeadline: Handler = async (req, res) => {
+const addHeadline: Handler = async (req, res, next) => {
     const { headline } = req.body
     try {
         const addedHeadline = await headlinesService.addHeadline(headline)
-        if (!addedHeadline) throw new Error('headline could not be created')
+        if (!addedHeadline) throw new DatabaseConnectionError()
         res.status(200).send(addedHeadline)
 
     } catch (err) {
         console.log(err, 'error adding headline')
-        res.status(500).send({ err: 'addHeadline failed to add headline' })
+        next(err)
     }
 }
 

@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema<UserDoc>({
     password: {
         type: String,
         required: true,
+        select: false,
     },
     favoriteHeadlinesIds: {
         type: [String],
