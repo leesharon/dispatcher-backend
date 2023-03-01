@@ -4,11 +4,11 @@ import { BadRequestError } from '../../errors/bad-request-error'
 import User from '../../models/user.model'
 import { NotAuthorizedError } from '../../errors/not-authorized-error'
 import { Response } from 'express'
+import { Strings } from '../../constants'
 
 export const authService = {
     signup,
     login,
-    logout,
     generateTokens,
     generateAccessToken,
     generateRefreshToken,
@@ -40,19 +40,15 @@ async function login(email: string, password: string) {
     return userObject
 }
 
-async function logout() {
-    return 'loggedout!'
-}
-
 function generateTokens(res: Response, userId: string) {
     const accessToken = authService.generateAccessToken(userId)
     const refreshToken = authService.generateRefreshToken(userId)
 
-    res.cookie('accessToken', accessToken, {
+    res.cookie(Strings.ACCESS_TOKEN, accessToken, {
         httpOnly: true,
         maxAge: 15 * 60 * 1000 // 15 minutes
     })
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie(Strings.REFRESH_TOKEN, refreshToken, {
         httpOnly: true,
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     })

@@ -1,5 +1,8 @@
 import { Handler } from 'express'
+import { Strings } from '../../constants'
 import { authService } from './auth.service'
+import { DatabaseConnectionError } from '../../errors/database-connection-error'
+import { NotAuthorizedError } from '../../errors/not-authorized-error'
 
 const signup: Handler = async (req, res, next) => {
     const { email, password } = req.body
@@ -15,7 +18,7 @@ const signup: Handler = async (req, res, next) => {
     }
 }
 
-const login: Handler = async (req, res) => {
+const login: Handler = async (req, res, next) => {
     const { email, password } = req.body
     try {
         const user = await authService.login(email, password)
@@ -24,18 +27,19 @@ const login: Handler = async (req, res) => {
 
     } catch (err) {
         console.log(err, 'login error')
-        res.status(401).send({ err: 'Failed to Login' })
+        next(err)
     }
 }
 
-const logout: Handler = async (req, res) => {
+const logout: Handler = async (req, res, next) => {
     try {
-        const user = await authService.logout()
-        res.status(200).send(user)
+        res.clearCookie(Strings.ACCESS_TOKEN)
+        res.clearCookie(Strings.REFRESH_TOKEN)
+        res.status(204).end()
 
     } catch (err) {
-        console.log(err, 'logout error')
-        res.status(500).send({ err: 'Failed to logout' })
+        console.log(err)
+        next(err)
     }
 }
 
