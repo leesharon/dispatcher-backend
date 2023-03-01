@@ -14,6 +14,7 @@ import { isEnvVarsExist } from './utils/generalUtils'
 const app = express()
 
 if (process.env.NODE_ENV !== 'test') {
+    if (!isEnvVarsExist()) throw new Error('need to setup env variables')
     app.use(morgan.successHandler)
     app.use(morgan.errorHandler)
 }
@@ -34,6 +35,7 @@ app.use(errorHandler)
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
-    if (!isEnvVarsExist()) throw new Error('need to setup env variables')
     console.log(`Server listening on port ${port}.`)
 })
+
+export default app
