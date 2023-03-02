@@ -38,3 +38,24 @@ it('should not signup a user with invalid password', async () => {
         })
     expect(response.status).toEqual(400)
 })
+
+it('should not signup a user with email already in use', async () => {
+    await global.signup()
+    const email = 'l@l.com'
+    const password = 'Lol123123123'
+
+    const response = await request(app)
+        .post('/api/auth/signup')
+        .send({
+            email,
+            password
+        })
+    expect(response.status).toEqual(400)
+})
+
+
+
+
+
+
+

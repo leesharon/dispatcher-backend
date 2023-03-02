@@ -8,7 +8,7 @@ const getHeadlines: Handler = async (req, res, next) => {
     try {
         const headlines = await headlinesService.getHeadlines()
         if (!headlines) throw new DatabaseConnectionError()
-        res.status(200).send(headlines)
+        res.status(200).send({ headlines })
 
     } catch (err) {
         console.log(err, 'error getting headlines')
@@ -21,7 +21,7 @@ const getHeadlineById: Handler = async (req, res, next) => {
     try {
         const headline = await headlinesService.getHeadlineById(id)
         if (headline.length === 0 || !headline) throw new DatabaseConnectionError()
-        res.status(200).send(headline)
+        res.status(200).send({ headline })
 
     } catch (err) {
         console.log(err, 'error getting headline by id')
@@ -34,7 +34,7 @@ const addHeadline: Handler = async (req, res, next) => {
     try {
         const addedHeadline = await headlinesService.addHeadline(headline)
         if (!addedHeadline || headline.length === 0) throw new DatabaseConnectionError()
-        res.status(200).send(addedHeadline)
+        res.status(200).send({ addedHeadline })
 
     } catch (err) {
         console.log(err, 'error adding headline')
@@ -48,7 +48,7 @@ const updateHeadline: Handler = async (req, res, next) => {
     try {
         const data = await headlinesService.updateHeadline(id, headline as HeadlineDoc)
         if (data.modifiedCount === 0) throw new NotFoundError()
-        res.status(200).send(data)
+        res.status(200).send({ data })
 
     } catch (err) {
         console.log(err, 'error updating headline')
@@ -61,7 +61,7 @@ const removeHeadline: Handler = async (req, res, next) => {
     try {
         const data = await headlinesService.removeHeadline(id)
         if (data.deletedCount === 0) throw new NotFoundError()
-        res.status(200).send(data)
+        res.status(200).send({ data })
 
     } catch (err) {
         console.log(err, 'error removing headline')
