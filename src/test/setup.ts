@@ -17,6 +17,7 @@ beforeAll(async () => {
     const mongo = await MongoMemoryServer.create()
     const mongoUri = mongo.getUri()
 
+    mongoose.set('strictQuery', false)
     await mongoose.connect(mongoUri, {})
 })
 
