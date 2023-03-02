@@ -12,7 +12,11 @@ const signup: Handler = async (req, res, next) => {
         res.status(201).send({ user })
 
     } catch (err) {
-        console.log(err, 'signup error')
+        console.log(`
+        signup could not be completed for ${email}
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
+        `)
         next(err)
     }
 }
@@ -28,10 +32,9 @@ const login: Handler = async (req, res, next) => {
     } catch (err) {
         console.log(`
         login could not be completed for ${email}
-        params: ${req.body}
-        ${err}
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
         `)
-        console.log(err, 'login error')
         next(err)
     }
 }
@@ -43,7 +46,11 @@ const logout: Handler = async (req, res, next) => {
         res.status(204).end()
 
     } catch (err) {
-        console.log(err)
+        console.log(`
+        logout could not be completed
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
+        `)
         next(err)
     }
 }

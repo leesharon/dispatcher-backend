@@ -1,6 +1,5 @@
 Todo's
 
-- logprefixes
-- testing
+- logprefixes params?
 - pagination
 - connect newsAPI

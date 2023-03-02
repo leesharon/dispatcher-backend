@@ -11,7 +11,11 @@ const getHeadlines: Handler = async (req, res, next) => {
         res.status(200).send({ headlines })
 
     } catch (err) {
-        console.log(err, 'error getting headlines')
+        console.log(`
+        getHeadlines could not be completed
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
+        `)
         next(err)
     }
 }
@@ -24,7 +28,11 @@ const getHeadlineById: Handler = async (req, res, next) => {
         res.status(200).send({ headline })
 
     } catch (err) {
-        console.log(err, 'error getting headline by id')
+        console.log(`
+        getHeadlineById could not be completed for ${id}
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
+        `)
         next(err)
     }
 }
@@ -37,7 +45,11 @@ const addHeadline: Handler = async (req, res, next) => {
         res.status(201).send({ headline: addedHeadline })
 
     } catch (err) {
-        console.log(err, 'error adding headline')
+        console.log(`
+        addHeadline could not be completed for ${headline}
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
+        `)
         next(err)
     }
 }
@@ -51,7 +63,11 @@ const updateHeadline: Handler = async (req, res, next) => {
         res.status(200).send({ data })
 
     } catch (err) {
-        console.log(err, 'error updating headline')
+        console.log(`
+        updateHeadline could not be completed for ${id}
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
+        `)
         next(err)
     }
 }
@@ -64,7 +80,11 @@ const removeHeadline: Handler = async (req, res, next) => {
         res.status(204).send({ data })
 
     } catch (err) {
-        console.log(err, 'error removing headline')
+        console.log(`
+        removeHeadline could not be completed for ${id}
+        logMeta: ${JSON.stringify(req.logMeta)}
+        err: ${err}
+        `)
         next(err)
     }
 }

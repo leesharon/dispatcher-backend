@@ -10,6 +10,7 @@ import { errorHandler } from './middlewares/error-handler'
 import connect from './services/db.service'
 import { isEnvVarsExist } from './utils/generalUtils'
 import { morgan } from './logger'
+import { logMetaMiddleware } from './middlewares/log-meta'
 
 const app = express()
 
@@ -22,6 +23,7 @@ const setUpMiddleware = (app: Express) => {
     }
     app.use(json())
     app.use(cookieParser())
+    app.use(logMetaMiddleware)
 }
 
 const setUpRoutes = (app: Express) => {
