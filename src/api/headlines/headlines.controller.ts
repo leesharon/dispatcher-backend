@@ -61,7 +61,7 @@ const removeHeadline: Handler = async (req, res, next) => {
     try {
         const data = await headlinesService.removeHeadline(id)
         if (data.deletedCount === 0) throw new NotFoundError()
-        res.status(200).send({ data })
+        res.status(204).send({ data })
 
     } catch (err) {
         console.log(err, 'error removing headline')

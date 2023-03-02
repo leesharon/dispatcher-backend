@@ -11,7 +11,7 @@ it('returns a 401 if the user is not authenticated', async () => {
                 url: 'test',
                 urlToImage: 'test',
                 publishedAt: 'test',
-                source: { 'id': 'strsssing', 'name': 'string' },
+                source: { 'id': 'string', 'name': 'string' },
             }
         })
         .expect(401)
@@ -28,7 +28,7 @@ it('returns a 400 if the headline is invalid', async () => {
                 url: 'test',
                 urlToImage: 'test',
                 publishedAt: 'test',
-                source: { 'id': 'strsssing', 'name': 'string' },
+                source: { 'id': 'string', 'name': 'string' },
             }
         })
 })
@@ -45,7 +45,7 @@ it('returns a 201 on successful headline creation', async () => {
                 url: 'test',
                 urlToImage: 'test',
                 publishedAt: 'test',
-                source: { 'id': 'strsssing', 'name': 'string' },
+                source: { 'id': 'string', 'name': 'string' },
             }
         })
 })
