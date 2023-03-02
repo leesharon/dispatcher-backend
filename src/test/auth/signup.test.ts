@@ -5,8 +5,10 @@ it('should signup a user', async () => {
     const response = await request(app)
         .post('/api/auth/signup')
         .send({
-            email: 'test@test.com',
-            password: 'Lol123123123'
+            user: {
+                email: 'test@test3.com',
+                password: 'Lol123123123'
+            }
         })
     expect(response.status).toEqual(201)
     expect(response.headers['set-cookie']).toEqual(expect.arrayContaining([
@@ -23,8 +25,10 @@ it('should not signup a user with invalid email', async () => {
     const response = await request(app)
         .post('/api/auth/signup')
         .send({
-            email: 'test',
-            password: 'Lol123123123'
+            user: {
+                email: 'test1',
+                password: 'Lol123123123'
+            }
         })
     expect(response.status).toEqual(400)
 })
@@ -33,22 +37,25 @@ it('should not signup a user with invalid password', async () => {
     const response = await request(app)
         .post('/api/auth/signup')
         .send({
-            email: 'test@test.comm',
-            password: 'Lol123'
+            user: {
+                email: 'test@test2.comm',
+                password: 'Lol123'
+            }
         })
     expect(response.status).toEqual(400)
 })
 
 it('should not signup a user with email already in use', async () => {
-    await global.signup()
     const email = 'l@l.com'
     const password = 'Lol123123123'
 
     const response = await request(app)
         .post('/api/auth/signup')
         .send({
-            email,
-            password
+            user: {
+                email,
+                password
+            }
         })
     expect(response.status).toEqual(400)
 })

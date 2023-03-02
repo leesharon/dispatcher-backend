@@ -20,7 +20,7 @@ const getHeadlineById: Handler = async (req, res, next) => {
     const { id } = req.params
     try {
         const headline = await headlinesService.getHeadlineById(id)
-        if (headline.length === 0 || !headline) throw new DatabaseConnectionError()
+        if (headline.length === 0 || !headline) throw new NotFoundError()
         res.status(200).send({ headline })
 
     } catch (err) {
@@ -34,7 +34,7 @@ const addHeadline: Handler = async (req, res, next) => {
     try {
         const addedHeadline = await headlinesService.addHeadline(headline)
         if (!addedHeadline || headline.length === 0) throw new DatabaseConnectionError()
-        res.status(200).send({ addedHeadline })
+        res.status(201).send({ headline: addedHeadline })
 
     } catch (err) {
         console.log(err, 'error adding headline')

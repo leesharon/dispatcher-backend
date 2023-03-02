@@ -22,7 +22,7 @@
         "start": "ts-node-dev --no-notify --respawn --transpile-only src/server.ts",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        "test": "jest --watchAll --no-cache"
+        "test": "jest --watchAll --no-cache --detectOpenHandles"
     },
     "jest": {
         "preset": "ts-jest",

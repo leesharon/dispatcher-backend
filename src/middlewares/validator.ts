@@ -16,8 +16,9 @@ const validateHeadline = () => {
 
 const validateAuth = () => {
     return [
-        body('email').isEmail().withMessage('Email must be valid'),
-        body('password').trim()
+        body('user').isObject().withMessage('user must be an object'),
+        body('user.email').isEmail().withMessage('Email must be valid'),
+        body('user.password').trim()
             .isLength({ min: 12, max: 20 })
             .withMessage('Password must be between 12 and 20 characters')
             .matches(/^(?=.*[A-Z])(?=.*\d)/)

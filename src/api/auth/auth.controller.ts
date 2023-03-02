@@ -3,7 +3,8 @@ import { Strings } from '../../constants'
 import { authService } from './auth.service'
 
 const signup: Handler = async (req, res, next) => {
-    const { email, password } = req.body
+    const { user } = req.body
+    const { email, password } = user
     try {
         const user = await authService.signup(email, password)
 
@@ -17,7 +18,8 @@ const signup: Handler = async (req, res, next) => {
 }
 
 const login: Handler = async (req, res, next) => {
-    const { email, password } = req.body
+    const { user } = req.body
+    const { email, password } = user
     try {
         const user = await authService.login(email, password)
         authService.generateTokens(res, user._id.toString())

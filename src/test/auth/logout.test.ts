@@ -2,7 +2,7 @@ import request from 'supertest'
 import app from './../../app'
 
 it('should logout a user', async () => {
-    const cookie = await global.signup()
+    const cookie = await global.login()
 
     const response = await request(app)
         .post('/api/auth/logout')
