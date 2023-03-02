@@ -4,7 +4,7 @@ import request from 'supertest'
 import app from '../app'
 
 declare global {
-    function login(): Promise<string[]>;
+    function signup(): Promise<string[]>;
 }
 
 let mongo: any
@@ -14,7 +14,7 @@ beforeAll(async () => {
     process.env.JWT_REFRESH_SECRET = 'kaskfdnasfkn'
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
-    const mongo = await MongoMemoryServer.create()
+    mongo = await MongoMemoryServer.create()
     const mongoUri = mongo.getUri()
 
     mongoose.set('strictQuery', false)
@@ -36,7 +36,7 @@ afterAll(async () => {
     await mongoose.connection.close()
 })
 
-global.login = async () => {
+global.signup = async () => {
     const email = 'l@l.com'
     const password = 'Lol123123123'
 
