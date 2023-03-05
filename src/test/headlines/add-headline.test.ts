@@ -7,7 +7,7 @@ it('returns a 201 on successful headline creation', async () => {
         .post('/api/headlines')
         .set('Cookie', cookie)
         .send({
-            headline: {
+            itemData: {
                 title: 'test',
                 description: 'test',
                 url: 'test',
@@ -25,7 +25,7 @@ it('returns a 401 if the user is not authenticated', async () => {
     return request(app)
         .post('/api/headlines')
         .send({
-            headline: {
+            itemData: {
                 title: 'test',
                 description: 'test',
                 url: 'test',
@@ -43,7 +43,7 @@ it('returns a 400 if the headline is invalid', async () => {
         .post('/api/headlines')
         .set('Cookie', cookie)
         .send({
-            headline: {
+            itemData: {
                 description: 'test',
                 url: 'test',
                 urlToImage: 'test',

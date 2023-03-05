@@ -16,7 +16,7 @@ it('returns the headline if the headline is found', async () => {
         .post('/api/headlines')
         .set('Cookie', cookie)
         .send({
-            headline: {
+            itemData: {
                 title: 'test',
                 description: 'test',
                 url: 'test',
@@ -30,7 +30,7 @@ it('returns the headline if the headline is found', async () => {
         .expect(201)
 
     await request(app)
-        .get(`/api/headlines/${response.body.headline._id}`)
+        .get(`/api/headlines/${response.body.addedItem._id}`)
         .set('Cookie', cookie)
         .send()
         .expect(200)

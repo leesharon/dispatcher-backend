@@ -16,10 +16,12 @@ const addHeadline = (headline: HeadlineDoc) => {
 }
 
 const updateHeadline = (id: string, headline: HeadlineDoc) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestError('Invalid headline id')
     return Headline.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { ...headline })
 }
 
 const removeHeadline = (id: string) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestError('Invalid headline id')
     return Headline.deleteOne({ _id: new mongoose.Types.ObjectId(id) })
 }
 
