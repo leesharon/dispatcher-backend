@@ -1,6 +1,6 @@
 Todo's
 
-- pagination - skip, limit, count, aggregate, compass.
+- pagination - skip, limit, count, aggregate.
 - populate:
     - choose one field or add another one in headline.
     - create new collection to that field.
@@ -8,10 +8,8 @@ Todo's
     - insert id of item inside new headline field.
     - populate / aggregate.
 
-
 Ask About
 
-- why some methods on the CrudController are protected or private
+- why some methods on the CrudController getAll protected
 - how to implement the service
-- what is the ISchema type
-
+- what is the ISchema type, DocumentStatusEnum

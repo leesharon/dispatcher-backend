@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, Router, NextFunction, RequestHandler } from 'express'
-// import ISchema from './baseInterface.interface'
 import mongoose, { Model } from 'mongoose'
 import { NotFoundError } from '../../src/errors/not-found-error'
 import { BadRequestError } from '../../src/errors/bad-request-error'
 import { DatabaseConnectionError } from '../../src/errors/database-connection-error'
-// import { MongoErrorException } from '../exceptions'
+// import ISchema from './baseInterface.interface'
 // import { PaginationModel } from '../models/pagination.model'
 // import { DocumentStatusEnum } from '../types/documentStatus.enum'
 
@@ -22,7 +21,7 @@ abstract class CrudController {
     protected abstract initializeRoutes(): void;
     protected abstract getSchema(): Model<any>;
 
-    async getAll(req: Request, res: Response, next: NextFunction) {
+    protected async getAll(req: Request, res: Response, next: NextFunction) {
         try {
             const items = await this.t.find({}).lean()
             if (!items) throw new DatabaseConnectionError()
@@ -30,6 +29,36 @@ abstract class CrudController {
 
         } catch (err) {
             console.log(`getAll could not be completed.
+                logMeta: ${JSON.stringify(req.logMeta)}
+                err: ${err}`)
+            next(err)
+        }
+    }
+
+    protected async getAllWithPagination(req: Request, res: Response, next: NextFunction) {
+        const page = parseInt(req.query.page as string) || 1
+        const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 10
+        const skip = (page - 1) * itemsPerPage
+        try {
+            if (itemsPerPage > 100) throw new BadRequestError('itemsPerPage cannot be greater than 100')
+
+            const items = await this.t.find().lean().skip(skip).limit(itemsPerPage)
+            if (!items) throw new DatabaseConnectionError()
+
+            const totalItems = await this.t.countDocuments({})
+            const totalPages = Math.ceil(totalItems / itemsPerPage)
+
+            const result = {
+                totalItems,
+                totalPages,
+                currentPage: page,
+                itemsPerPage,
+                items,
+            }
+            res.status(200).send({ result })
+
+        } catch (err) {
+            console.log(`getAllWithPagination could not be completed.
                 logMeta: ${JSON.stringify(req.logMeta)}
                 err: ${err}`)
             next(err)
@@ -106,6 +135,5 @@ abstract class CrudController {
         }
     }
 }
-
 
 export default CrudController
