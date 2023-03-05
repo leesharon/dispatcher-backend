@@ -40,6 +40,8 @@ abstract class CrudController {
         const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 10
         const skip = (page - 1) * itemsPerPage
         try {
+            if (itemsPerPage > 100) throw new BadRequestError('itemsPerPage cannot be greater than 100')
+
             const items = await this.t.find().lean().skip(skip).limit(itemsPerPage)
             if (!items) throw new DatabaseConnectionError()
 
