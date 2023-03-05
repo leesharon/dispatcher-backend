@@ -23,7 +23,7 @@ it('returns a 204 if the headline is deleted', async () => {
         .post('/api/headlines')
         .set('Cookie', cookie)
         .send({
-            headline: {
+            itemData: {
                 title: 'test',
                 description: 'test',
                 url: 'test',
@@ -36,7 +36,7 @@ it('returns a 204 if the headline is deleted', async () => {
         })
         .expect(201)
     await request(app)
-        .delete(`/api/headlines/${response.body.headline._id}`)
+        .delete(`/api/headlines/${response.body.addedItem._id}`)
         .set('Cookie', cookie)
         .send()
         .expect(204)

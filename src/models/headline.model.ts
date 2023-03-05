@@ -27,6 +27,7 @@ const headlineSchema = new mongoose.Schema<HeadlineDoc>({
             name: { type: String },
         },
         required: true,
+        _id: false
     },
     author: {
         type: String,
