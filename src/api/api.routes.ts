@@ -1,8 +1,7 @@
 import express from 'express'
 import authRoutes from './auth/auth.routes'
-import headlineRoutes from './headlines/headlines.routes'
 import { authenticateToken } from './../middlewares/authenticate-token'
-import HeadlinesController from './headlines/headlines-class-controller'
+import HeadlinesController from './headlines/headlines-controller'
 
 const headlinesController = new HeadlinesController()
 
