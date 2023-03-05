@@ -7,6 +7,7 @@ class HeadlinesController extends CrudController {
 
     protected initializeRoutes() {
         this.router.get('/', this.getAll.bind(this))
+        this.router.get('/pagination', this.getAllWithPagination.bind(this))
         this.router.get('/:id', this.getById.bind(this))
         this.router.delete('/:id', this.remove.bind(this))
         this.router.post('/', Validator.validateHeadline(), validateRequest, this.create.bind(this))
