@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response, Router, NextFunction, RequestHandler } from 'express'
+import { Request, Response, Router, NextFunction } from 'express'
 import mongoose, { Model } from 'mongoose'
 import { NotFoundError } from '../../src/errors/not-found-error'
 import { BadRequestError } from '../../src/errors/bad-request-error'
@@ -65,7 +65,7 @@ abstract class CrudController {
         }
     }
 
-    async getById(req: Request, res: Response, next: NextFunction) {
+    protected async getById(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params
         try {
             if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestError('Invalid headline id')
@@ -81,7 +81,7 @@ abstract class CrudController {
         }
     }
 
-    async create(req: Request, res: Response, next: NextFunction) {
+    protected async create(req: Request, res: Response, next: NextFunction) {
         const { itemData }: any = req.body
         try {
             const addedItem = await this.t.create(itemData)
@@ -96,7 +96,7 @@ abstract class CrudController {
         }
     }
 
-    async remove(req: Request, res: Response, next: NextFunction) {
+    protected async remove(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params
         try {
             if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestError('Invalid headline id')
@@ -112,7 +112,7 @@ abstract class CrudController {
         }
     }
 
-    async update(req: Request, res: Response, next: NextFunction) {
+    protected async update(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params
         const { itemData } = req.body
         try {

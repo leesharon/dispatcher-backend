@@ -1,6 +1,5 @@
 Todo's
 
-- pagination - skip, limit, count, aggregate.
 - populate:
     - choose one field or add another one in headline.
     - create new collection to that field.
@@ -10,6 +9,5 @@ Todo's
 
 Ask About
 
-- why some methods on the CrudController getAll protected
-- how to implement the service
+- how to implement the service for crudController
 - what is the ISchema type, DocumentStatusEnum
